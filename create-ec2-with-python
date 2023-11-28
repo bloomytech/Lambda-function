@@ -1,23 +1,33 @@
+# Importing necessary modules for AWS Lambda function
 import os
 import boto3
 
-AMI = os.environ['AMI']
-INSTANCE_TYPE = os.environ['INSTANCE_TYPE']
-KEY_NAME = os.environ['KEY_NAME']
-SUBNET_ID = os.environ['SUBNET_ID']
+# Retrieving environment variables for AWS resources
+AMI = os.environ['AMI']  # Amazon Machine Image ID
+INSTANCE_TYPE = os.environ['INSTANCE_TYPE']  # EC2 instance type
+KEY_NAME = os.environ['KEY_NAME']  # SSH key pair name
+SUBNET_ID = os.environ['SUBNET_ID']  # Subnet ID for the new instance
+SECURITY_GROUP_ID = os.environ['SECURITY_GROUP_ID']  # Security Group ID for the new instance
 
+# Creating an EC2 resource object using the Boto3 library
 ec2 = boto3.resource('ec2')
 
-
+# AWS Lambda handler function
 def lambda_handler(event, context):
-
+    # Creating a new EC2 instance based on specified parameters
     instance = ec2.create_instances(
         ImageId=AMI,
         InstanceType=INSTANCE_TYPE,
         KeyName=KEY_NAME,
-        SubnetId=SUBNET_ID,
         MaxCount=1,
-        MinCount=1
+        MinCount=1,
+        NetworkInterfaces=[{
+            'SubnetId': SUBNET_ID,
+            'Groups': [SECURITY_GROUP_ID],
+            'DeviceIndex': 0,
+            'AssociatePublicIpAddress': True
+        }]
     )
 
+    # Printing the ID of the newly created EC2 instance
     print("New instance created:", instance[0].id)
