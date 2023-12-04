@@ -3,11 +3,11 @@ import os
 import boto3
 
 # Retrieving environment variables for AWS resources
-AMI = os.environ['AMI']  # Amazon Machine Image ID
-INSTANCE_TYPE = os.environ['INSTANCE_TYPE']  # EC2 instance type
-KEY_NAME = os.environ['KEY_NAME']  # SSH key pair name
-SUBNET_ID = os.environ['SUBNET_ID']  # Subnet ID for the new instance
-SECURITY_GROUP_ID = os.environ['SECURITY_GROUP_ID']  # Security Group ID for the new instance
+AMI = os.environ['AMI']
+INSTANCE_TYPE = os.environ['INSTANCE_TYPE']
+KEY_NAME = os.environ['KEY_NAME']
+SUBNET_ID = os.environ['SUBNET_ID']
+SECURITY_GROUP_ID = os.environ['SECURITY_GROUP_ID']
 
 # Creating an EC2 resource object using the Boto3 library
 ec2 = boto3.resource('ec2')
